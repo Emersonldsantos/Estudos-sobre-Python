@@ -8,7 +8,11 @@ Tip: There are 2 ways to round a number. You might have to do some Googling to s
 ##########################RESOLUÇÃO##################################
 
 print('Welcome to the tip calculator')
-#Solicitação de preenchimento de informações do total da conta, quantas pessoas irão pagar e quanto desejam pagar de gorjeta para o calculo do valor que deverá ser pago por cada indivíduo presente.
+#Solicitação de preenchimento das seguintes informações:
+#    -total da conta
+#    -quantas pessoas irão pagar
+#    -quanto desejam pagar de gorjeta
+# A partir do preenchimento das informações solicitadas acima, poderemos calcular o valor da conta a ser pago por cada pessoa presente.
 bill = float(input('What was the total bill?')) #Total da conta
 
 people = int(input('How many people to split the bill?')) #Quantidade de Pessoas
