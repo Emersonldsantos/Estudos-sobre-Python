@@ -31,8 +31,9 @@ resources = {
 }
 
 
-# Mostrando o report:
+
 def show_report(resources, money):
+    '''Função mostra quando tem de cada item no estoque'''
     for item in resources:
         if item == 'water' or item == 'milk':
             print(f'{item}: {resources[item]}ml')
@@ -41,8 +42,9 @@ def show_report(resources, money):
     print(f'Money: ${money}')
 
 
-# Check resources suficiente:
 def enough_resources(menu, would_you_like, resources):
+    '''Verifica se existem recursos o suficiente no estoque para atender ao pedido do cliente.
+    Caso não tenha, retorna a mensagem de qual item está faltando.'''
     for i in menu:
         if i == would_you_like:
             for ingredients in menu[i]['ingredients']:
@@ -53,6 +55,9 @@ def enough_resources(menu, would_you_like, resources):
 
 # Pagamento
 def payment(menu, would_you_like, pay):
+    '''Função que compara se o valor que o cliente pagou é o maior ou menor ao preço do produto. Caso seja menor,
+    retorna a mensagem de que não é o suficiente e o dinheiro é reembolsado. Caso seja maior, a máquina oferece o
+    troco.'''
     for item in menu:
         if item == would_you_like:
             if pay < menu[item]['cost']:
@@ -63,9 +68,8 @@ def payment(menu, would_you_like, pay):
                 print(f"Here is ${round(change, 2)} dollars in change")
 
 
-# Fazendo o pedido:
-
 def make_order(menu, resources):
+    '''Retira do estoque as quantidades necessárias para produzir o produto do cliente.'''
     for i in menu:
         if i == would_you_like:
             for ingredients in menu[i]['ingredients']:
@@ -73,7 +77,7 @@ def make_order(menu, resources):
 
 
 # Máquina de café
-def coffe_machine():
+def coffee_machine():
     money = 0
 
     machine_execution = True
@@ -84,26 +88,32 @@ def coffe_machine():
 
         while order_execution == True:
 
+            #Solicitação de desligamento da order
             if would_you_like == 'off':
                 machine_execution = False
 
+            #Mostrar a situação do estoque atual
             elif would_you_like == 'report':
                 show_report(resources, money)
                 order_execution = False
 
             else:
+                #Caso a função que verifica se tem recursos o suficiente retornar 'false',
+                #a execução da order é abortada.
                 if enough_resources(menu, would_you_like, resources) == False:
                     order_execution = False
 
                 else:
+                    #solicitação de pagamento
                     pay = float(input('Please, insert your coins: '))
                     money += pay
 
                     # pagamento
                     payment(menu, would_you_like, pay)
 
-                    # fazendo o pedido
+                    # retirando os itens do estoque
                     make_order(menu, resources)
 
+                    #entrega do pedido ao cliente
                     print(f"Here is your {would_you_like}. Enjoy!")
                     order_execution = False
