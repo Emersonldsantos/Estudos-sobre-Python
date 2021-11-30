@@ -1,0 +1,109 @@
+menu = {
+    "espresso": {
+        "ingredients": {
+            "water": 50,
+            "coffee": 18,
+        },
+        "cost": 1.5,
+    },
+    "latte": {
+        "ingredients": {
+            "water": 200,
+            "milk": 150,
+            "coffee": 24,
+        },
+        "cost": 2.5,
+    },
+    "cappuccino": {
+        "ingredients": {
+            "water": 250,
+            "milk": 100,
+            "coffee": 24,
+        },
+        "cost": 3.0,
+    }
+}
+
+resources = {
+    "water": 300,
+    "milk": 200,
+    "coffee": 100,
+}
+
+
+# Mostrando o report:
+def show_report(resources, money):
+    for item in resources:
+        if item == 'water' or item == 'milk':
+            print(f'{item}: {resources[item]}ml')
+        elif item == 'coffee':
+            print(f'{item}: {resources[item]}g')
+    print(f'Money: ${money}')
+
+
+# Check resources suficiente:
+def enough_resources(menu, would_you_like, resources):
+    for i in menu:
+        if i == would_you_like:
+            for ingredients in menu[i]['ingredients']:
+                if resources[ingredients] < menu[i]['ingredients'][ingredients]:
+                    print(f"Sorry there is not enough {ingredients}")
+                    return False
+
+
+# Pagamento
+def payment(menu, would_you_like, pay):
+    for item in menu:
+        if item == would_you_like:
+            if pay < menu[item]['cost']:
+                print("Sorry, that's not enough money. Money refunded.")
+                order_execution = False
+            elif pay > menu[item]['cost']:
+                change = pay - menu[item]['cost']
+                print(f"Here is ${round(change, 2)} dollars in change")
+
+
+# Fazendo o pedido:
+
+def make_order(menu, resources):
+    for i in menu:
+        if i == would_you_like:
+            for ingredients in menu[i]['ingredients']:
+                resources[ingredients] -= menu[i]['ingredients'][ingredients]
+
+
+# Máquina de café
+def coffe_machine():
+    money = 0
+
+    machine_execution = True
+    while machine_execution == True:
+
+        would_you_like = input('What would you like? (espresso/latte/cappuccino): ')
+        order_execution = True
+
+        while order_execution == True:
+
+            if would_you_like == 'off':
+                machine_execution = False
+
+            elif would_you_like == 'report':
+                show_report(resources, money)
+                order_execution = False
+
+            else:
+                if enough_resources(menu, would_you_like, resources) == False:
+                    order_execution = False
+
+                else:
+                    pay = float(input('Please, insert your coins: '))
+                    money += pay
+
+                    # pagamento
+                    payment(menu, would_you_like, pay)
+
+                    # fazendo o pedido
+                    make_order(menu, resources)
+
+                    print(f"Here is your {would_you_like}. Enjoy!")
+                    order_execution = False
